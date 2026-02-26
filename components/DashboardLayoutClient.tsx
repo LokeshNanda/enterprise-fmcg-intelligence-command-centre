@@ -55,34 +55,34 @@ export function DashboardLayoutClient({
   }, []);
 
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen overflow-y-auto lg:overflow-hidden">
       <BackgroundGrid />
-      <div className="flex gap-4 p-4 lg:p-6 max-w-[1920px] mx-auto">
+      <div className="flex gap-4 p-3 sm:p-4 lg:p-6 max-w-[1920px] mx-auto">
         <aside className="hidden lg:block">
           <DashboardSidebar />
         </aside>
-        <main className="flex-1 min-w-0 flex flex-col">
-          <div className="lg:hidden mb-2">
+        <main className="flex-1 min-w-0 flex flex-col min-h-0 lg:min-h-screen">
+          <div className="lg:hidden mb-2 shrink-0">
             <DashboardSidebarMobile />
           </div>
           {kpiData && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-4 flex items-center gap-3"
+              className="mb-4 flex flex-col lg:flex-row lg:items-center gap-3 shrink-0"
             >
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 overflow-hidden">
                 <KPIBar data={kpiData} />
               </div>
               <button
                 onClick={() => setBriefingOpen(true)}
-                className="shrink-0 px-4 py-2 rounded-xl text-sm font-medium bg-accent/20 text-accent border border-accent/30 hover:bg-accent/30 transition-colors"
+                className="shrink-0 w-full lg:w-auto px-4 py-3 lg:py-2 rounded-xl text-sm font-medium bg-accent/20 text-accent border border-accent/30 hover:bg-accent/30 transition-colors touch-manipulation"
               >
                 Executive Briefing
               </button>
             </motion.div>
           )}
-          <div className="flex-1 min-h-0">{children}</div>
+          <div className="flex-1 min-h-0 overflow-y-auto lg:overflow-visible pb-20 lg:pb-0">{children}</div>
         </main>
       </div>
       {kpiData && (

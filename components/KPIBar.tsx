@@ -56,7 +56,7 @@ export function KPIBar({ data }: KPIBarProps) {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="flex flex-wrap gap-4 justify-between px-6 py-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10"
+      className="flex flex-nowrap lg:flex-wrap overflow-x-auto lg:overflow-visible gap-4 justify-between px-4 lg:px-6 py-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 scrollbar-hide"
     >
       {KPI_CONFIG.map((config, i) => {
         const value = config.getValue(data);
@@ -69,7 +69,7 @@ export function KPIBar({ data }: KPIBarProps) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05, duration: 0.3 }}
-            className="flex flex-col items-center min-w-[120px] group"
+            className="flex flex-col items-center min-w-[100px] lg:min-w-[120px] shrink-0 group"
           >
             <span className="text-[10px] uppercase tracking-widest text-gray-400 mb-1">
               {config.label}

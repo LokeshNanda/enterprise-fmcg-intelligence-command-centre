@@ -143,7 +143,7 @@ export function ColdChainMap({ routes }: ColdChainMapProps) {
   }, [routePaths]);
 
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden bg-black/5 border border-white/10 aspect-[4/3] min-h-[500px]">
+    <div className="relative w-full rounded-2xl overflow-hidden bg-black/5 border border-white/10 aspect-[4/3] min-h-[300px] lg:min-h-[500px]">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{

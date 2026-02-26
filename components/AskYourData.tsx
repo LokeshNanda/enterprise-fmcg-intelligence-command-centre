@@ -84,7 +84,7 @@ export function AskYourData({ data }: AskYourDataProps) {
       {/* Floating button */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent/90 text-[#0A0F1C] shadow-lg shadow-accent/30 flex items-center justify-center hover:bg-accent transition-colors"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] lg:bottom-6 lg:right-6 z-50 w-14 h-14 min-w-[44px] min-h-[44px] rounded-full bg-accent/90 text-[#0A0F1C] shadow-lg shadow-accent/30 flex items-center justify-center hover:bg-accent transition-colors touch-manipulation"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         title="Ask your data"
@@ -119,7 +119,7 @@ export function AskYourData({ data }: AskYourDataProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed bottom-6 right-6 z-[70] w-full max-w-md rounded-2xl bg-[#0A0F1C] border border-white/10 shadow-2xl overflow-hidden"
+              className="fixed inset-x-4 bottom-4 z-[70] w-[calc(100%-2rem)] max-h-[85vh] lg:inset-auto lg:bottom-6 lg:right-6 lg:w-full lg:max-w-md lg:max-h-none rounded-2xl bg-[#0A0F1C] border border-white/10 shadow-2xl overflow-hidden"
             >
               <div className="p-4 border-b border-white/10 flex items-center justify-between">
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">

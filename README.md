@@ -30,11 +30,61 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Deploy to Vercel
+## Docker
+
+### Build and run
 
 ```bash
+docker build -t fmcg-command-centre .
+docker run -p 3000:3000 fmcg-command-centre
+```
+
+Or with Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### Environment variables
+
+Pass env vars when running:
+
+```bash
+docker run -p 3000:3000 -e OPENAI_API_KEY=sk-... fmcg-command-centre
+```
+
+With Docker Compose, create a `.env` file (copy from `.env.example`) in the project root—Compose will pass `OPENAI_API_KEY` to the container automatically.
+
+## Deploy to Vercel
+
+The easiest way to deploy is with [Vercel](https://vercel.com).
+
+### Option 1: Deploy with Vercel CLI
+
+```bash
+npm i -g vercel
 vercel
 ```
+
+Follow the prompts to link your project or create a new one.
+
+### Option 2: Deploy from Git
+
+1. Push your code to GitHub, GitLab, or Bitbucket.
+2. Import the project at [vercel.com/new](https://vercel.com/new).
+3. Vercel will auto-detect Next.js and configure the build.
+
+### Environment Variables
+
+For AI-powered features (Ask Your Data, LLM insights), add in Vercel:
+
+| Variable        | Description                          | Required |
+|----------------|--------------------------------------|----------|
+| `OPENAI_API_KEY` | OpenAI API key for GPT-powered insights | Optional (falls back to rule-based) |
+
+**Settings → Environment Variables** in your Vercel project dashboard.
 
 ## Project Structure
 

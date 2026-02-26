@@ -1,0 +1,46 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+.next
+out
+dist
+build
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# IDE / Editor
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
+
+# Debug & logs
+*.log
+npm-debug.log*
+coverage
+.nyc_output
+
+# Misc
+.turbo
+*.tsbuildinfo
+README.md
+Dockerfile
+.dockerignore
+docker-compose*.yml

@@ -77,7 +77,7 @@ export default function CommandCentrePage() {
             <div className="flex gap-2 p-3 border-b border-white/10">
               <button
                 onClick={() => setMapMode("revenue")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-4 py-2.5 lg:py-2 rounded-lg text-sm font-medium transition-all touch-manipulation ${
                   mapMode === "revenue"
                     ? "bg-accent/20 text-accent shadow-glow-sm"
                     : "text-gray-400 hover:text-gray-200"
@@ -87,7 +87,7 @@ export default function CommandCentrePage() {
               </button>
               <button
                 onClick={() => setMapMode("risk")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-4 py-2.5 lg:py-2 rounded-lg text-sm font-medium transition-all touch-manipulation ${
                   mapMode === "risk"
                     ? "bg-red-500/20 text-red-400 shadow-glow-critical"
                     : "text-gray-400 hover:text-gray-200"
@@ -96,7 +96,7 @@ export default function CommandCentrePage() {
                 Risk
               </button>
             </div>
-            <div className="p-4 h-[400px] lg:h-[450px] min-h-0">
+            <div className="p-3 lg:p-4 h-[320px] lg:h-[450px] min-h-0">
               <IndiaHeatMap
                 states={data.states}
                 mode={mapMode}
@@ -153,7 +153,7 @@ export default function CommandCentrePage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-[#0A0F1C]/95 backdrop-blur-xl border-l border-white/10 z-50 p-6 overflow-y-auto"
+              className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-[#0A0F1C]/95 backdrop-blur-xl border-l border-white/10 z-50 p-4 lg:p-6 overflow-y-auto overscroll-contain"
             >
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-lg font-bold text-white">
