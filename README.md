@@ -19,7 +19,7 @@ A cinematic, futuristic enterprise dashboard for a large FMCG conglomerate — i
 - TailwindCSS
 - Framer Motion
 - Recharts
-- Mapbox GL (optional — fallback state grid when no token)
+- react-simple-maps (India choropleth, no API key required)
 
 ## Getting Started
 
@@ -30,27 +30,11 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-### Mapbox (Optional)
-
-For the interactive India choropleth map, add a Mapbox access token:
-
-1. Create a free account at [mapbox.com](https://account.mapbox.com/)
-2. Copy your public token
-3. Create `.env.local`:
-
-```
-NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_token_here
-```
-
-Without the token, the map shows a state grid fallback.
-
 ## Deploy to Vercel
 
 ```bash
 vercel
 ```
-
-Set `NEXT_PUBLIC_MAPBOX_TOKEN` in Vercel environment variables if using the map.
 
 ## Project Structure
 

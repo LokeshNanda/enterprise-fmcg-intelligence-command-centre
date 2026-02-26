@@ -20,7 +20,7 @@ export function SalesPanel({ data }: SalesPanelProps) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4 }}
-      className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-4 hover:border-accent/20 transition-colors"
+      className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-4 hover:border-accent/20 transition-colors h-full flex flex-col"
     >
       <h3 className="text-xs uppercase tracking-widest text-gray-400 mb-4">
         Sales & Distribution Momentum
@@ -54,7 +54,7 @@ export function SalesPanel({ data }: SalesPanelProps) {
         ))}
       </div>
 
-      <div className="h-20">
+      <div className="h-20 shrink-0">
         <span className="text-[10px] uppercase text-gray-500 block mb-1">
           SKU Momentum
         </span>

@@ -53,13 +53,13 @@ export default function CommandCentrePage() {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 min-h-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 min-h-0 overflow-auto">
         {/* Left Panel - Manufacturing */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
-          className="lg:col-span-2 order-2 lg:order-1"
+          className="lg:col-span-2 order-2 lg:order-1 min-w-0 h-full"
         >
           <ManufacturingPanel data={data.manufacturing} />
         </motion.div>
@@ -69,9 +69,9 @@ export default function CommandCentrePage() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.15 }}
-          className="lg:col-span-8 order-1 lg:order-2 relative"
+          className="lg:col-span-8 order-1 lg:order-2 relative min-w-0 h-full"
         >
-          <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden">
+          <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden h-full">
             <div className="flex gap-2 p-3 border-b border-white/10">
               <button
                 onClick={() => setMapMode("revenue")}
@@ -94,7 +94,7 @@ export default function CommandCentrePage() {
                 Risk
               </button>
             </div>
-            <div className="p-4 h-[400px] lg:h-[450px]">
+            <div className="p-4 h-[400px] lg:h-[450px] min-h-0">
               <IndiaHeatMap
                 states={data.states}
                 mode={mapMode}
@@ -109,7 +109,7 @@ export default function CommandCentrePage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="lg:col-span-2 order-3"
+          className="lg:col-span-2 order-3 min-w-0 h-full"
         >
           <SalesPanel data={data.sales} />
         </motion.div>
@@ -119,7 +119,7 @@ export default function CommandCentrePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="lg:col-span-4 order-4"
+          className="lg:col-span-4 order-4 min-w-0 h-full"
         >
           <FinancePanel data={data.finance} />
         </motion.div>
@@ -129,7 +129,7 @@ export default function CommandCentrePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="lg:col-span-8 order-5"
+          className="lg:col-span-8 order-5 min-w-0 h-full"
         >
           <AIInsights insights={data.aiInsights} />
         </motion.div>

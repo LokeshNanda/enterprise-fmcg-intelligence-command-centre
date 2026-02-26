@@ -35,7 +35,7 @@ Deployable on Vercel using Next.js.
 - TailwindCSS
 - Framer Motion
 - Recharts
-- Mapbox GL
+- react-simple-maps
 - TypeScript
 - Server-side mock data generator
 

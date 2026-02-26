@@ -12,13 +12,13 @@ export function AIInsights({ insights }: AIInsightsProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-4 hover:border-accent/20 transition-colors"
+      className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-4 hover:border-accent/20 transition-colors h-full flex flex-col"
     >
       <h3 className="text-xs uppercase tracking-widest text-gray-400 mb-3 flex items-center gap-2">
         <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
         AI Executive Insights
       </h3>
-      <ul className="space-y-2">
+      <ul className="space-y-2 flex-1 min-h-0">
         {insights.map((insight, i) => (
           <motion.li
             key={i}

@@ -7,7 +7,7 @@ Requirements:
 - Use TailwindCSS for styling.
 - Use Framer Motion for animations.
 - Use Recharts for charts.
-- Use Mapbox GL for India heatmap.
+- Use react-simple-maps for India heatmap (no API key required).
 - Dark theme with neon blue accent.
 - Smooth animated KPI counters.
 - Data refresh every 20 seconds without page reload.

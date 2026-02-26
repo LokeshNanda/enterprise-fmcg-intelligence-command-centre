@@ -36,7 +36,7 @@ export function ManufacturingPanel({ data }: ManufacturingPanelProps) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4 }}
-      className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-4 hover:border-accent/20 transition-colors"
+      className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-4 hover:border-accent/20 transition-colors h-full flex flex-col"
     >
       <h3 className="text-xs uppercase tracking-widest text-gray-400 mb-4">
         Manufacturing Intelligence
@@ -60,7 +60,7 @@ export function ManufacturingPanel({ data }: ManufacturingPanelProps) {
           );
         })}
       </div>
-      <div className="h-24">
+      <div className="h-24 shrink-0">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData}>
             <defs>
