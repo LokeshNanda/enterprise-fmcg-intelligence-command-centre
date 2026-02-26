@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import { KPIBar } from "@/components/KPIBar";
 import { BackgroundGrid } from "@/components/BackgroundGrid";
 import { DashboardSidebar, DashboardSidebarMobile } from "@/components/DashboardSidebar";
+import { ExecutiveBriefingMode } from "@/components/ExecutiveBriefingMode";
+import { AskYourData } from "@/components/AskYourData";
+import { getUserOpenAIKey } from "@/lib/openaiKey";
 import type { DashboardData } from "@/lib/types";
 
 const REFRESH_INTERVAL_MS = 20000;
@@ -15,10 +18,15 @@ export function DashboardLayoutClient({
   children: React.ReactNode;
 }) {
   const [kpiData, setKpiData] = useState<DashboardData | null>(null);
+  const [briefingOpen, setBriefingOpen] = useState(false);
+  const [userKeyVersion, setUserKeyVersion] = useState(0);
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await fetch("/api/metrics");
+      const userKey = getUserOpenAIKey();
+      const headers: Record<string, string> = {};
+      if (userKey) headers["X-OpenAI-Key"] = userKey;
+      const res = await fetch("/api/metrics", { headers });
       const json = await res.json();
       setKpiData(json);
     } catch (err) {
@@ -27,10 +35,24 @@ export function DashboardLayoutClient({
   }, []);
 
   useEffect(() => {
+    const onKeyChanged = () => setUserKeyVersion((v) => v + 1);
+    window.addEventListener("openai-key-changed", onKeyChanged);
+    return () => window.removeEventListener("openai-key-changed", onKeyChanged);
+  }, []);
+
+  useEffect(() => {
     fetchData();
     const id = setInterval(fetchData, REFRESH_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [fetchData]);
+  }, [fetchData, userKeyVersion]);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setBriefingOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -47,14 +69,30 @@ export function DashboardLayoutClient({
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-4"
+              className="mb-4 flex items-center gap-3"
             >
-              <KPIBar data={kpiData} />
+              <div className="flex-1 min-w-0">
+                <KPIBar data={kpiData} />
+              </div>
+              <button
+                onClick={() => setBriefingOpen(true)}
+                className="shrink-0 px-4 py-2 rounded-xl text-sm font-medium bg-accent/20 text-accent border border-accent/30 hover:bg-accent/30 transition-colors"
+              >
+                Executive Briefing
+              </button>
             </motion.div>
           )}
           <div className="flex-1 min-h-0">{children}</div>
         </main>
       </div>
+      {kpiData && (
+        <ExecutiveBriefingMode
+          data={kpiData}
+          isOpen={briefingOpen}
+          onClose={() => setBriefingOpen(false)}
+        />
+      )}
+      <AskYourData data={kpiData} />
     </div>
   );
 }

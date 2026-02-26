@@ -11,6 +11,7 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
+import { ColdChainMap } from "@/components/ColdChainMap";
 import type { DairyColdChainData } from "@/lib/types";
 
 const REFRESH_INTERVAL_MS = 20000;
@@ -50,6 +51,7 @@ export default function DairyColdChainPage() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Animated Cold Chain Map - Hero */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -57,6 +59,19 @@ export default function DairyColdChainPage() {
       >
         <h3 className="text-xs uppercase tracking-widest text-gray-400 mb-4">
           Cold Chain Route Animation
+        </h3>
+        <ColdChainMap routes={data.routes} />
+      </motion.div>
+
+      {/* Route cards */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        className="lg:col-span-2 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-4"
+      >
+        <h3 className="text-xs uppercase tracking-widest text-gray-400 mb-4">
+          Route Status
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {data.routes.map((route) => (
