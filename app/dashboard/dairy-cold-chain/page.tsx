@@ -60,7 +60,9 @@ export default function DairyColdChainPage() {
         <h3 className="text-xs uppercase tracking-widest text-gray-400 mb-4">
           Cold Chain Route Animation
         </h3>
-        <ColdChainMap routes={data.routes} />
+        <div className="w-full min-h-[500px]">
+          <ColdChainMap routes={data.routes} />
+        </div>
       </motion.div>
 
       {/* Route cards */}

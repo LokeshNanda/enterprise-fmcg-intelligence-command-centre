@@ -38,7 +38,9 @@ export function DashboardSidebar() {
                   whileHover={{ x: 2 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="text-base">{item.icon}</span>
+                  {item.href === "/dashboard/command-centre" && (
+                    <span className="text-base">{item.icon}</span>
+                  )}
                   <span className="truncate">{item.label}</span>
                 </motion.div>
               </Link>
@@ -67,7 +69,9 @@ export function DashboardSidebarMobile() {
               }`}
               whileTap={{ scale: 0.98 }}
             >
-              <span>{item.icon}</span>
+              {item.href === "/dashboard/command-centre" && (
+                <span>{item.icon}</span>
+              )}
               <span>{item.label}</span>
             </motion.div>
           </Link>

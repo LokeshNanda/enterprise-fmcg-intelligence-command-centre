@@ -17,6 +17,11 @@ export default function CommandCentrePage() {
   const [selectedState, setSelectedState] = useState<StateData | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const handleStateClick = useCallback((state: StateData | null) => {
+    setSelectedState(state);
+    if (state) setDrawerOpen(true);
+  }, []);
+
   const fetchData = useCallback(async () => {
     try {
       const res = await fetch("/api/metrics");
@@ -33,9 +38,6 @@ export default function CommandCentrePage() {
     return () => clearInterval(id);
   }, [fetchData]);
 
-  useEffect(() => {
-    if (selectedState) setDrawerOpen(true);
-  }, [selectedState]);
 
   if (!data) {
     return (
@@ -98,7 +100,7 @@ export default function CommandCentrePage() {
               <IndiaHeatMap
                 states={data.states}
                 mode={mapMode}
-                onStateHover={setSelectedState}
+                onStateClick={handleStateClick}
               />
             </div>
           </div>

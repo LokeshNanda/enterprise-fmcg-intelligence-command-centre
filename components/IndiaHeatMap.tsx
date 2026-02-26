@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps";
+import { geoCentroid } from "d3-geo";
 import { motion, AnimatePresence } from "framer-motion";
 import type { StateData } from "@/lib/types";
 
@@ -17,6 +18,7 @@ interface IndiaHeatMapProps {
   states: StateData[];
   mode: "revenue" | "risk";
   onStateHover?: (state: StateData | null) => void;
+  onStateClick?: (state: StateData | null) => void;
 }
 
 function normalize(value: number, min: number, max: number): number {
@@ -42,8 +44,8 @@ function resolveStateName(geoName: string): string {
   return STATE_NAME_ALIASES[geoName] ?? geoName;
 }
 
-export function IndiaHeatMap({ states, mode, onStateHover }: IndiaHeatMapProps) {
-  const [selectedState, setSelectedState] = useState<StateData | null>(null);
+export function IndiaHeatMap({ states, mode, onStateHover, onStateClick }: IndiaHeatMapProps) {
+  const [hoveredState, setHoveredState] = useState<StateData | null>(null);
 
   const { stateMap, minVal, maxVal } = useMemo(() => {
     const map = new Map(states.map((s) => [s.name, s]));
@@ -62,13 +64,21 @@ export function IndiaHeatMap({ states, mode, onStateHover }: IndiaHeatMapProps) 
     if (!geoName) return;
     const resolvedName = resolveStateName(geoName);
     const state = stateMap.get(resolvedName);
-    setSelectedState(state ?? null);
+    setHoveredState(state ?? null);
     onStateHover?.(state ?? null);
   };
 
   const handleMouseLeave = () => {
-    setSelectedState(null);
+    setHoveredState(null);
     onStateHover?.(null);
+  };
+
+  const handleClick = (geo: { properties?: { ST_NM?: string } }) => {
+    const geoName = geo.properties?.ST_NM;
+    if (!geoName) return;
+    const resolvedName = resolveStateName(geoName);
+    const state = stateMap.get(resolvedName);
+    onStateClick?.(state ?? null);
   };
 
   return (
@@ -84,6 +94,7 @@ export function IndiaHeatMap({ states, mode, onStateHover }: IndiaHeatMapProps) 
         className="india-map-svg"
         style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto" }}
       >
+        <ZoomableGroup center={[78.5, 22]} zoom={1} minZoom={0.5} maxZoom={8}>
         <Geographies geography={GEOJSON_URL}>
           {({ geographies }) =>
             geographies.map((geo) => {
@@ -116,13 +127,44 @@ export function IndiaHeatMap({ states, mode, onStateHover }: IndiaHeatMapProps) 
                   }}
                   onMouseEnter={() => handleMouseEnter(geo)}
                   onMouseLeave={handleMouseLeave}
+                  onClick={() => handleClick(geo)}
                 />
               );
             })
           }
         </Geographies>
+        {/* State labels */}
+        <Geographies geography={GEOJSON_URL}>
+          {({ geographies }) =>
+            geographies.map((geo) => {
+              const geoName = geo.properties?.ST_NM as string | undefined;
+              if (!geoName) return null;
+              try {
+                const centroid = geoCentroid(geo as unknown as Parameters<typeof geoCentroid>[0]);
+                const resolvedName = resolveStateName(geoName);
+                const state = stateMap.get(resolvedName);
+                const displayName = state ? resolvedName : geoName;
+                return (
+                  <Marker key={`label-${geo.rsmKey}`} coordinates={centroid}>
+                    <text
+                      textAnchor="middle"
+                      fontSize={9}
+                      fill="rgba(255,255,255,0.85)"
+                      style={{ pointerEvents: "none", userSelect: "none" }}
+                    >
+                      {displayName.length > 12 ? displayName.slice(0, 10) + "…" : displayName}
+                    </text>
+                  </Marker>
+                );
+              } catch {
+                return null;
+              }
+            })
+          }
+        </Geographies>
+        </ZoomableGroup>
       </ComposableMap>
-      <div className="absolute top-3 left-3 flex gap-2">
+      <div className="absolute top-3 left-3 flex flex-col gap-2">
         <span
           className={`px-3 py-1 rounded-lg text-xs font-medium ${
             mode === "revenue"
@@ -132,9 +174,10 @@ export function IndiaHeatMap({ states, mode, onStateHover }: IndiaHeatMapProps) 
         >
           {mode === "revenue" ? "Revenue" : "Risk"}
         </span>
+        <span className="text-[10px] text-gray-500">Scroll to zoom · Drag to pan · Click state for details</span>
       </div>
       <AnimatePresence>
-        {selectedState && (
+        {hoveredState && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -142,13 +185,14 @@ export function IndiaHeatMap({ states, mode, onStateHover }: IndiaHeatMapProps) 
             className="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-black/60 backdrop-blur border border-white/10"
           >
             <div className="text-sm font-medium text-white">
-              {selectedState.name}
+              {hoveredState.name}
             </div>
             <div className="text-xs text-gray-400 mt-1">
-              Revenue: ₹{(selectedState.revenue / 1000).toFixed(1)} Cr · Growth:{" "}
-              {selectedState.growth.toFixed(1)}% · Risk:{" "}
-              {selectedState.risk.toFixed(1)}
+              Revenue: ₹{(hoveredState.revenue / 1000).toFixed(1)} Cr · Growth:{" "}
+              {hoveredState.growth.toFixed(1)}% · Risk:{" "}
+              {hoveredState.risk.toFixed(1)}
             </div>
+            <div className="text-[10px] text-accent/80 mt-1">Click to open full details</div>
           </motion.div>
         )}
       </AnimatePresence>

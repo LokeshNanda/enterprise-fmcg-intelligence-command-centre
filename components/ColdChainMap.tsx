@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect } from "react";
 import { geoMercator } from "d3-geo";
@@ -50,7 +50,7 @@ interface ColdChainMapProps {
 const project = (() => {
   const proj = geoMercator()
     .center([78.5, 22])
-    .scale(800)
+    .scale(750)
     .translate([400, 300]);
   return (coord: [number, number]) => {
     const [lng, lat] = coord;
@@ -143,17 +143,18 @@ export function ColdChainMap({ routes }: ColdChainMapProps) {
   }, [routePaths]);
 
   return (
-    <div className="relative w-full h-full min-h-[400px] rounded-2xl overflow-hidden bg-black/5 border border-white/10">
+    <div className="relative w-full rounded-2xl overflow-hidden bg-black/5 border border-white/10 aspect-[4/3] min-h-[500px]">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
           center: [78.5, 22],
-          scale: 800,
+          scale: 750,
         }}
         width={800}
         height={600}
-        style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto" }}
+        style={{ width: "100%", height: "100%" }}
       >
+        <ZoomableGroup center={[78.5, 22]} zoom={1} minZoom={0.6} maxZoom={6}>
         <Geographies geography={GEOJSON_URL}>
           {({ geographies }) =>
             geographies.map((geo) => (
@@ -205,6 +206,7 @@ export function ColdChainMap({ routes }: ColdChainMapProps) {
             opacity={0.9}
           />
         ))}
+        </ZoomableGroup>
       </ComposableMap>
 
       {/* Legend */}
